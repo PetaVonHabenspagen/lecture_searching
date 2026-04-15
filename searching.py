@@ -21,11 +21,18 @@ def read_data(file_name, field):
     cwd_path = Path.cwd()
     
     file_path = cwd_path / file_name
+    import json
+    sequential_data = {}
+    with open(f"{file_path}", mode="r", encoding="utf-8") as file:
+        data = json.load(file)
+    if field in data:
+        return data[field]
+    return None
 
-
-def main():
-    pass
+def main(filename, key):
+    sequential_data = read_data(filename, key)
+    return print(sequential_data)
 
 
 if __name__ == "__main__":
-    main()
+    main("sequential.json", "unordered_numbers")
