@@ -37,14 +37,30 @@ def linear_search(sequence, wanted_number):
         if number == wanted_number:
             desired_dict["counter"] += 1
             pos = sequence.index(number)
+            sequence[pos] += 1
             desired_dict["positions"].append(pos)
     return desired_dict
 
+# def binary_search(numbers_list, wanted_number):
+#     lists = numbers_list
+#     middle = round((len(lists) / 2), 1)
+#     if lists[middle] == wanted_number:
+#         return middle
+#     elif lists[middle] > wanted_number:
+#         lists = lists[:middle]
+#     elif numbers_list[middle] < wanted_number:
+#         lists = lists[middle::]
+#     return
 
-def main(filename, key):
-    sequential_data = read_data(filename, key)
-    return print(sequential_data)
+
+
+def main():
+    sequential_data = read_data("sequential.json", "unordered_numbers")
+    wanted_number = 5
+    linear_data = linear_search(sequential_data, wanted_number)
+    return print(linear_data)
+
 
 
 if __name__ == "__main__":
-    main("sequential.json", "unordered_numbers")
+    main()
