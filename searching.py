@@ -22,12 +22,24 @@ def read_data(file_name, field):
     
     file_path = cwd_path / file_name
     import json
-    sequential_data = {}
     with open(f"{file_path}", mode="r", encoding="utf-8") as file:
         data = json.load(file)
-    if field in data:
+    if field in data.keys():
         return data[field]
     return None
+
+def linear_search(sequence, wanted_number):
+    desired_dict = {
+        "counter": 0,
+        "positions": []
+    }
+    for number in sequence:
+        if number == wanted_number:
+            desired_dict["counter"] += 1
+            pos = sequence.index(number)
+            desired_dict["positions"].append(pos)
+    return desired_dict
+
 
 def main(filename, key):
     sequential_data = read_data(filename, key)
