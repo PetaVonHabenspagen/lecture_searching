@@ -1,5 +1,9 @@
+from imp import load_source
 from pathlib import Path
 import json
+import time
+import matplotlib.pyplot as plt
+from generators import unordered_sequence, ordered_sequence
 
 
 def read_data(file_name, field):
@@ -21,7 +25,6 @@ def read_data(file_name, field):
     cwd_path = Path.cwd()
     
     file_path = cwd_path / file_name
-    import json
     with open(f"{file_path}", mode="r", encoding="utf-8") as file:
         data = json.load(file)
     if field in data.keys():
@@ -55,16 +58,56 @@ def binary_search(numbers_list, wanted_number):
 
     return None
 
+def test_complexity(list_of_n):
+    for n in list_of_n:
+        unordered = unordered_sequence(n)
+        ordered = ordered_sequence(n)
+        times_linear = []
+        times_binary = []
 
+        duration_linear = 0
+        duration_binary = 0
+        rep = 100
+        for measurements in range(rep):
+            start_linear = time.perf_counter()
+            linear = linear_search(unordered, 42)
+            end_linear = time.perf_counter()
+            duration_linear = end_linear - start_linear
 
+            start_binary = time.perf_counter()
+            binary = binary_search(ordered, 42)
+            end_binary = time.perf_counter()
+            duration_binary = end_binary - start_binary
+        times_linear.append(duration_linear / rep)
+        times_binary.append(duration_binary / rep)
+    plt.plot(list_of_n, times_linear)
+    plt.plot(list_of_n, times_binary)
+    return
 
+def pattern_search(sequency, pattern):
+    indices = {}
+    for i in range(sequency):
+        if sequency[i:i+len(pattern)] == pattern:
+            indices["index"].append(i)
+    return indices
 
 def main():
-    sequential_data = read_data("sequential.json", "ordered_numbers")
+    sequential_data_linear = read_data("sequential.json", "unordered_numbers")
+    sequential_data_binary = read_data("sequential.json", "ordered_numbers")
     wanted_number = 5
-    linear_data = linear_search(sequential_data, wanted_number)
-    binary_data = binary_search(sequential_data, 21)
-    return print(binary_data)
+
+    linear_data = linear_search(sequential_data_linear, wanted_number)
+
+    start = time.perf_counter()
+    binary_data = binary_search(sequential_data_binary, 21)
+    end = time.perf_counter()
+    diff = end - start
+    # print(diff)
+    sizes = [100, 500, 1000, 5000, 10000]
+    print(linear_data)
+    print(binary_data)
+    test_complexity(sizes)
+    return
 
 
 
